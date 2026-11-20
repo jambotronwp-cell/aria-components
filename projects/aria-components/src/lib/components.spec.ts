@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { throwError } from 'rxjs';
 import { JtBadgeComponent } from './badge/jt-badge.component';
 import { JtDialogService } from './dialog/jt-dialog.service';
-import { JtIconComponent, provideJtIcons } from './icon/jt-icon.component';
+import { JtIconComponent, provideJtIconFont, provideJtIcons } from './icon/jt-icon.component';
 import { provideJtLabels } from './labels';
 import { JtPasswordToggleComponent } from './password-toggle/jt-password-toggle.component';
 import { JtEmptyStateComponent } from './state/jt-empty-state.component';
@@ -29,6 +29,22 @@ describe('JtIconComponent', () => {
     expect(host.querySelector('path')?.getAttribute('d')).toBe('M1 1h2');
     expect(host.getAttribute('role')).toBe('img');
     expect(host.getAttribute('aria-label')).toBe('Launch');
+  });
+
+  it('falls back to the icon font for names without an SVG icon', () => {
+    TestBed.configureTestingModule({ providers: [provideJtIconFont('material-icons')] });
+    const fixture = TestBed.createComponent(JtIconComponent);
+    fixture.componentRef.setInput('name', 'rocket_launch');
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const span = host.querySelector('span.material-icons');
+    expect(span?.textContent?.trim()).toBe('rocket_launch');
+    expect(host.querySelector('svg')).toBeNull();
+
+    fixture.componentRef.setInput('name', 'check');
+    fixture.detectChanges();
+    expect(host.querySelector('svg path')).not.toBeNull();
+    expect(host.querySelector('span')).toBeNull();
   });
 });
 

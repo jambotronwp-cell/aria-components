@@ -6,7 +6,7 @@ Light and dark theme out of the box, everything accessible from the keyboard and
 | | |
 | --- | --- |
 | **Theme** | `--jt-*` tokens, light + dark (system, or `JtThemeService` / `<jt-theme-toggle>`) |
-| `<jt-icon>` | 43 built-in SVG icons (Material Symbols names), your own via `provideJtIcons()` |
+| `<jt-icon>` | 43 built-in SVG icons (Material Symbols names), your own via `provideJtIcons()`, any other name from your icon font via `provideJtIconFont()` |
 | `<jt-badge>` | status badge: tone by status (`running`, `failed`…), live / busy / alarm dot |
 | `.jt-button` | filled, outlined, text, danger, icon button — plain CSS classes |
 | `JtDialogService` | dialogs on CDK Dialog; `confirm()` — type-the-name, "don't ask again", long action inside the dialog |
@@ -61,6 +61,18 @@ export class ProjectPage {
 
 Own dialog: `dialogs.open(MyDialog, { data })` — put `class="jt-dialog"` on its root, read data with `inject(DIALOG_DATA)`,
 close with `inject(DialogRef).close(result)`.
+
+## Icons
+
+43 SVG icons are built in. Add your own SVG paths, or let names without an SVG icon come from an icon font you
+already load (ligature fonts: Material Icons, Material Symbols):
+
+```ts
+providers: [
+  provideJtIcons({ rocket: ['M12 2c3 3 4 7 3 11l-3 3-3-3c-1-4 0-8 3-11z'] }),
+  provideJtIconFont('material-icons')        // <jt-icon name="cloud_off" /> → the font's glyph
+]
+```
 
 ## Labels
 

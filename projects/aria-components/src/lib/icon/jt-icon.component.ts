@@ -82,12 +82,26 @@ export function provideJtIcons(icons: Record<string, JtIconDefinition>): Provide
 }
 
 /**
+ * Icon font for names that are not among the SVG icons: provideJtIconFont('material-icons') — then
+ * <jt-icon name="rocket_launch" /> renders <span class="material-icons">rocket_launch</span> (ligature fonts:
+ * Material Icons, Material Symbols). The app loads the font itself.
+ */
+export const JT_ICON_FONT = new InjectionToken<string>('JT_ICON_FONT');
+
+export function provideJtIconFont(fontClass: string): Provider {
+  return { provide: JT_ICON_FONT, useValue: fontClass };
+}
+
+/**
  * Icon: <jt-icon name="check" />. Decorative by default (aria-hidden); with `label` — role="img" and the label.
  * Size — `size` (px) or CSS `--jt-icon-size`; color — currentColor.
  */
 @Component({
   selector: 'jt-icon',
   template: `
+    @if (fontIcon(); as font) {
+      <span [class]="font" aria-hidden="true">{{ name() }}</span>
+    } @else {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
          focusable="false" aria-hidden="true">
       @for (path of paths(); track $index) {
@@ -95,10 +109,12 @@ export function provideJtIcons(icons: Record<string, JtIconDefinition>): Provide
               [attr.opacity]="path.opacity ?? null" />
       }
     </svg>
+    }
   `,
   styles: [`
     :host { display: inline-flex; flex: none; width: var(--jt-icon-size, 24px); height: var(--jt-icon-size, 24px); line-height: 0; }
     svg { width: 100%; height: 100%; }
+    span { font-size: var(--jt-icon-size, 24px); width: 100%; height: 100%; line-height: 1; overflow: hidden; }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -111,14 +127,20 @@ export function provideJtIcons(icons: Record<string, JtIconDefinition>): Provide
 })
 export class JtIconComponent {
   private readonly extra = inject(JT_EXTRA_ICONS, { optional: true }) ?? [];
+  private readonly font = inject(JT_ICON_FONT, { optional: true });
 
   readonly name = input.required<string>();
   readonly label = input('');
   readonly size = input<number | null>(null);
 
-  protected readonly paths = computed<JtIconPath[]>(() => {
+  private readonly definition = computed<JtIconDefinition | undefined>(() => {
     const name = this.name();
-    const definition = [...this.extra].reverse().find(icons => icons[name])?.[name] ?? JT_ICONS[name] ?? [];
-    return definition.map(path => typeof path === 'string' ? { d: path } : path);
+    return [...this.extra].reverse().find(icons => icons[name])?.[name] ?? JT_ICONS[name];
   });
+
+  /** The font class when the name has no SVG icon and an icon font is provided */
+  protected readonly fontIcon = computed(() => this.definition() ? null : this.font);
+
+  protected readonly paths = computed<JtIconPath[]>(() =>
+    (this.definition() ?? []).map(path => typeof path === 'string' ? { d: path } : path));
 }
