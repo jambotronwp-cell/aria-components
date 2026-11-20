@@ -1,0 +1,11 @@
+// @jambotron/aria-components — theme and base classes. Include once in the app's global styles:
+//   @use '@jambotron/aria-components/styles/aria-components';
+// Tokens only (your own classes): @use '@jambotron/aria-components/styles/theme';
+@use '@angular/cdk';
+@use 'tokens';
+@use 'components';
+@use 'controls';
+
+// CDK overlay (dialogs) and .cdk-visually-hidden
+@include cdk.overlay();
+@include cdk.a11y-visually-hidden();

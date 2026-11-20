@@ -1,0 +1,39 @@
+{
+  "name": "@jambotron/aria-components",
+  "version": "0.1.2",
+  "peerDependencies": {
+    "@angular/common": "^22.2.0",
+    "@angular/core": "^22.2.0",
+    "@angular/aria": "^22.2.0",
+    "@angular/cdk": "^22.2.0",
+    "rxjs": "^7.8.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "description": "UI components for Angular on Angular Aria and CDK, no Angular Material: theme tokens (light/dark), icons, status badge, buttons, dialogs, toasts, tabs, empty/loading states",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://gitea.jambotron.com/jambotron_gang/jambotron-aria-components.git"
+  },
+  "exports": {
+    "./styles/*": {
+      "sass": "./styles/*.scss"
+    }
+  },
+  "homepage": "https://aria-components-demo.jambocheck.com",
+  "author": "Jambotron (https://jambotron.com)",
+  "keywords": [
+    "angular",
+    "angular-aria",
+    "accessibility",
+    "a11y",
+    "ui-components",
+    "dark-theme",
+    "dialog",
+    "toast",
+    "icons"
+  ]
+}

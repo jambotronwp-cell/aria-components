@@ -1,0 +1,60 @@
+<main>
+  <header class="top">
+    <h1>&#64;jambotron/aria-components</h1>
+    <jt-theme-toggle />
+  </header>
+
+  <section class="jt-panel">
+    <h2>Badges</h2>
+    <div class="row">
+      @for (status of statuses; track status) { <jt-badge [status]="status" /> }
+      <jt-badge tone="accent" label="beta" [dot]="false" />
+    </div>
+  </section>
+
+  <section class="jt-panel">
+    <h2>Buttons, dialog, toasts</h2>
+    <div class="row">
+      <button class="jt-button jt-button--filled" (click)="toasts.success('Saved')">Success toast</button>
+      <button class="jt-button jt-button--outlined" (click)="toasts.error('Deploy failed: port 80 is busy', 'Retry')">Error toast</button>
+      <button class="jt-button jt-button--filled jt-button--danger" (click)="confirm()">Delete…</button>
+      <button class="jt-button">Text</button>
+      <button class="jt-icon-button" aria-label="Refresh"><jt-icon name="refresh" /></button>
+      <span class="jt-muted">{{ answer() }}</span>
+    </div>
+  </section>
+
+  <section class="jt-panel">
+    <h2>Tabs</h2>
+    <jt-tabs [(selected)]="tab" label="Demo">
+      <ng-template jtTab="alerts" label="Alerts">
+        <jt-alert>Information for you.</jt-alert>
+        <jt-alert tone="success">Everything works.</jt-alert>
+        <jt-alert tone="warning">Disk is 87% full.</jt-alert>
+        <jt-alert tone="danger">The host is unreachable.</jt-alert>
+      </ng-template>
+      <ng-template jtTab="states" label="States">
+        <jt-loading-state />
+        <jt-empty-state title="No projects" message="Create the first one from a template.">
+          <button class="jt-button jt-button--filled"><jt-icon name="add" [size]="18" /> New project</button>
+        </jt-empty-state>
+        <jt-spinner [diameter]="20" />
+      </ng-template>
+      <ng-template jtTab="fields" label="Fields">
+        <div class="field">
+          <input #secret class="jt-input" type="password" value="hunter2" aria-label="Password">
+          <jt-password-toggle [target]="secret" />
+        </div>
+      </ng-template>
+    </jt-tabs>
+  </section>
+
+  <section class="jt-panel">
+    <h2>Icons</h2>
+    <div class="icons">
+      @for (icon of icons; track icon) {
+        <span class="icon" [title]="icon"><jt-icon [name]="icon" /><small>{{ icon }}</small></span>
+      }
+    </div>
+  </section>
+</main>

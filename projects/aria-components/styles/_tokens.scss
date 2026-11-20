@@ -1,0 +1,229 @@
+// @jambotron/aria-components — design tokens of Jambotron: CSS variables --jt-*, light and dark theme.
+// Selectors are wrapped in :where() (zero specificity): any --jt-* your app sets wins.
+//
+// The palette comes from the Jambotron background with the pyramid:
+//   night sky (dark blue) — the base; the cyan of the beam — the main accent;
+//   gold and amber of the pyramid — the second accent and highlights; pink-violet sunset — the third (statuses, charts).
+//
+// Theme: by the system setting (prefers-color-scheme); an explicit choice — [data-theme] on <html> (JtThemeService).
+// color-scheme is set with the theme: native controls (and Angular Material, if used) pick their colors by it.
+//
+// Contrast (WCAG AA, at least 4.5:1) is checked for text on glass over the most difficult part of the background:
+// dark theme — the white top and the gold of the pyramid, light theme — the night sky.
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Independent of the theme
+:where(:root) {
+  // Background palette
+  --jt-night-950: #050a24;
+  --jt-night-900: #0a1030;
+  --jt-night-800: #111a4a;
+  --jt-night-700: #1c2a6b;
+  --jt-cyan-300: #7ff0ff;
+  --jt-cyan-400: #3ee6ff;
+  --jt-cyan-500: #14c8e6;
+  --jt-cyan-700: #0b6e80;
+  --jt-gold-300: #ffd98a;
+  --jt-gold-400: #f5b942;
+  --jt-amber-500: #ff9a2e;
+  --jt-amber-700: #a35400;
+  --jt-pink-400: #ff6fae;
+  --jt-pink-700: #a3245d;
+  --jt-violet-400: #b77cff;
+  --jt-violet-700: #6a2fb8;
+
+  // Glass: a base layer, with the theme tint on top (--jt-glass-tint) for text contrast
+  --jt-glass-base: rgba(153, 153, 153, 0.16);
+  --jt-glass-blur: blur(8px);
+
+  // Radii
+  --jt-radius-sm: 6px;
+  --jt-radius-md: 10px;
+  --jt-radius-lg: 16px;
+  --jt-radius-xl: 24px;
+  --jt-radius-pill: 999px;
+
+  // Spacing (4px steps)
+  --jt-space-1: 4px;
+  --jt-space-2: 8px;
+  --jt-space-3: 12px;
+  --jt-space-4: 16px;
+  --jt-space-5: 24px;
+  --jt-space-6: 32px;
+  --jt-space-7: 48px;
+  --jt-space-8: 64px;
+
+  // Fonts (Orbitron for display; fallbacks when it is not loaded)
+  --jt-font-body: Roboto, 'Helvetica Neue', sans-serif;
+  --jt-font-display: Orbitron, Roboto, 'Helvetica Neue', sans-serif;
+  --jt-font-mono: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+
+  // Text sizes: rem only — they scale with the browser's font setting. px only for icons
+  // (together with width and height). Large page titles (clamp, display) — where they are used
+  --jt-fs-2xs: 0.6875rem; // 11px
+  --jt-fs-xs: 0.75rem;    // 12px
+  --jt-fs-sm: 0.8125rem;  // 13px
+  --jt-fs-md: 0.875rem;   // 14px
+  --jt-fs-base: 1rem;     // 16px
+  --jt-fs-lg: 1.125rem;   // 18px
+  --jt-fs-xl: 1.375rem;   // 22px
+  --jt-fs-2xl: 1.75rem;   // 28px
+
+  // Motion
+  --jt-duration-fast: 150ms;
+  --jt-duration-base: 250ms;
+  --jt-duration-slow: 400ms;
+  --jt-easing: cubic-bezier(0.2, 0, 0, 1);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Light theme: light glass, dark text
+@mixin light-theme {
+  color-scheme: light;
+
+  --jt-glass-tint: #e7edf3c2;
+  --jt-glass-tint-strong: #eef2f7e6; // menus, dialogs — above the content
+  --jt-glass-border: rgba(10, 16, 48, 0.12);
+  --jt-glass-highlight: rgba(255, 255, 255, 0.6); // light edge on top
+
+  // Opaque surfaces — where there is no glass (menus, dropdowns, dialogs): from lowest to highest
+  --jt-surface: #f3f6fa;
+  --jt-surface-lowest: #ffffff;
+  --jt-surface-low: #eef2f7;
+  --jt-surface-container: #e8edf3;
+  --jt-surface-high: #e2e8ef;
+  --jt-surface-highest: #dce3eb;
+  --jt-surface-inverse: #232a4a; // toast
+  --jt-on-surface-inverse: #eef2ff;
+
+  --jt-text: #141a33;
+  --jt-text-muted: #39425f;
+  --jt-text-disabled: rgba(20, 26, 51, 0.45);
+  --jt-divider: rgba(10, 16, 48, 0.12);
+
+  // Accents: fill (buttons, badges, lines), color on the fill, text on glass and color on it when it is a fill itself
+  --jt-accent: var(--jt-cyan-500);
+  --jt-on-accent: var(--jt-night-950);
+  --jt-accent-text: #074b5a;
+  --jt-on-accent-text: #ffffff;
+  --jt-accent-2: var(--jt-gold-400);
+  --jt-on-accent-2: var(--jt-night-950);
+  --jt-accent-2-text: #6b3a00;
+  --jt-accent-3: var(--jt-violet-400);
+  --jt-on-accent-3: var(--jt-night-950);
+  --jt-accent-3-text: #4f1f8f;
+
+  // Statuses
+  --jt-success: #22c55e;
+  --jt-success-text: #0c4f26;
+  --jt-warning: var(--jt-amber-500);
+  --jt-warning-text: #6b3a00;
+  --jt-danger: #ef4444;
+  --jt-on-danger: #ffffff;
+  --jt-danger-text: #8a1414;
+  --jt-info: var(--jt-cyan-500);
+  --jt-info-text: #074b5a;
+
+  // Chart series: fixed order — blue, orange, teal, yellow (checked for color blindness);
+  // the fifth and later — "other", in grey. The color does not mean a status
+  --jt-chart-1: #2a78d6;
+  --jt-chart-2: #eb6834;
+  --jt-chart-3: #1baf7a;
+  --jt-chart-4: #eda100;
+  --jt-chart-other: #8a91a8;
+  --jt-chart-grid: rgba(10, 16, 48, 0.1);
+
+  // Form fields
+  --jt-field-bg: rgba(255, 255, 255, 0.55);
+  --jt-field-border: rgba(10, 16, 48, 0.28);
+  --jt-focus-ring: 0 0 0 3px rgba(20, 200, 230, 0.45);
+
+  // Shadows and glow: softer glow in the light theme
+  --jt-shadow-sm: 0 1px 3px rgba(10, 16, 48, 0.12);
+  --jt-shadow-md: 0 6px 20px rgba(10, 16, 48, 0.14);
+  --jt-shadow-lg: 0 16px 48px rgba(10, 16, 48, 0.2);
+  --jt-glow-accent: 0 0 10px rgba(20, 200, 230, 0.35);
+  --jt-glow-accent-2: 0 0 10px rgba(245, 185, 66, 0.35);
+  --jt-glow-accent-3: 0 0 10px rgba(183, 124, 255, 0.35);
+  --jt-text-glow: none;
+}
+
+// Dark theme: dark glass (night-sky tint), light text, neon accents
+@mixin dark-theme {
+  color-scheme: dark;
+
+  --jt-glass-tint: rgba(10, 16, 44, 0.72);
+  --jt-glass-tint-strong: rgba(8, 12, 36, 0.86);
+  --jt-glass-border: rgba(62, 230, 255, 0.22);
+  --jt-glass-highlight: rgba(255, 255, 255, 0.08);
+
+  --jt-surface: #0c1234;
+  --jt-surface-lowest: #070b26;
+  --jt-surface-low: #10183e;
+  --jt-surface-container: #141e48;
+  --jt-surface-high: #192452;
+  --jt-surface-highest: #1f2b5c;
+  --jt-surface-inverse: #e6eaf5;
+  --jt-on-surface-inverse: #141a33;
+
+  --jt-text: #eef2ff;
+  --jt-text-muted: #ccd4ec;
+  --jt-text-disabled: rgba(238, 242, 255, 0.45);
+  --jt-divider: rgba(195, 204, 230, 0.16);
+
+  --jt-accent: var(--jt-cyan-400);
+  --jt-on-accent: var(--jt-night-950);
+  --jt-accent-text: var(--jt-cyan-300);
+  --jt-on-accent-text: var(--jt-night-950);
+  --jt-accent-2: var(--jt-gold-400);
+  --jt-on-accent-2: var(--jt-night-950);
+  --jt-accent-2-text: var(--jt-gold-300);
+  --jt-accent-3: var(--jt-violet-400);
+  --jt-on-accent-3: var(--jt-night-950);
+  --jt-accent-3-text: #e0c8ff;
+
+  --jt-success: #34d399;
+  --jt-success-text: #86efac;
+  --jt-warning: var(--jt-amber-500);
+  --jt-warning-text: var(--jt-gold-300);
+  --jt-danger: #f87171;
+  --jt-on-danger: var(--jt-night-950);
+  --jt-danger-text: #fecaca;
+  --jt-info: var(--jt-cyan-400);
+  --jt-info-text: var(--jt-cyan-300);
+
+  --jt-chart-1: #3987e5;
+  --jt-chart-2: #d95926;
+  --jt-chart-3: #199e70;
+  --jt-chart-4: #c98500;
+  --jt-chart-other: #7d86a6;
+  --jt-chart-grid: rgba(195, 204, 230, 0.12);
+
+  --jt-field-bg: rgba(5, 10, 36, 0.55);
+  --jt-field-border: rgba(195, 204, 230, 0.3);
+  --jt-focus-ring: 0 0 0 3px rgba(62, 230, 255, 0.5);
+
+  --jt-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --jt-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.45);
+  --jt-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --jt-glow-accent: 0 0 14px rgba(62, 230, 255, 0.55);
+  --jt-glow-accent-2: 0 0 14px rgba(245, 185, 66, 0.55);
+  --jt-glow-accent-3: 0 0 14px rgba(183, 124, 255, 0.55);
+  --jt-text-glow: 0 0 8px rgba(62, 230, 255, 0.6);
+}
+
+:where(:root),
+:where([data-theme='light']) {
+  @include light-theme;
+}
+
+:where([data-theme='dark']) {
+  @include dark-theme;
+}
+
+// Dark by the system setting — before Angular loads, while JtThemeService has not set data-theme
+@media (prefers-color-scheme: dark) {
+  :where(:root:not([data-theme='light'])) {
+    @include dark-theme;
+  }
+}

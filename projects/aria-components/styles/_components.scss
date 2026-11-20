@@ -1,0 +1,433 @@
+// @jambotron/aria-components — base classes of the design system, only on --jt-* tokens (_tokens.scss).
+// Angular Aria where it has a pattern (tabs, menu, listbox, toolbar, grid), own small components for the rest
+// (buttons, dialog, toast, badge…) — no Angular Material needed.
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Glass: panel and card
+@mixin glass($strong: false) {
+  @if $strong {
+    background-color: var(--jt-glass-tint-strong);
+  } @else {
+    background-color: var(--jt-glass-tint);
+  }
+  background-image: linear-gradient(var(--jt-glass-base), var(--jt-glass-base));
+  backdrop-filter: var(--jt-glass-blur);
+  -webkit-backdrop-filter: var(--jt-glass-blur);
+  border: 1px solid var(--jt-glass-border);
+  box-shadow: inset 0 1px 0 var(--jt-glass-highlight), var(--jt-shadow-md);
+  color: var(--jt-text);
+}
+
+.jt-panel {
+  @include glass;
+  border-radius: var(--jt-radius-lg);
+  padding: var(--jt-space-5);
+}
+
+.jt-card {
+  @include glass;
+  display: flex;
+  flex-direction: column;
+  gap: var(--jt-space-3);
+  border-radius: var(--jt-radius-md);
+  padding: var(--jt-space-4);
+  transition: border-color var(--jt-duration-base) var(--jt-easing), box-shadow var(--jt-duration-base) var(--jt-easing);
+
+  &.jt-interactive:hover,
+  &.jt-interactive:focus-within {
+    border-color: var(--jt-accent);
+    box-shadow: inset 0 1px 0 var(--jt-glass-highlight), var(--jt-shadow-md), var(--jt-glow-accent);
+  }
+}
+
+.jt-card > .jt-badge {
+  align-self: flex-start;
+}
+
+.jt-card-title {
+  margin: 0;
+  font-family: var(--jt-font-display);
+  font-size: var(--jt-fs-base);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.jt-muted {
+  color: var(--jt-text-muted);
+}
+
+// A metric in a card: number and caption. The body font for numbers: Orbitron's zero is a crossed square,
+// which reads like an icon in a counter
+.jt-metric {
+  font-family: var(--jt-font-body);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--jt-fs-2xl);
+  font-weight: 700;
+  color: var(--jt-accent-text);
+  text-shadow: var(--jt-text-glow);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Status badge: <span class="jt-badge jt-badge--success">Active</span>
+.jt-badge {
+  --jt-badge-color: var(--jt-text-muted);
+  --jt-badge-fill: var(--jt-text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--jt-space-1);
+  padding: 2px var(--jt-space-2);
+  border-radius: var(--jt-radius-pill);
+  border: 1px solid color-mix(in srgb, var(--jt-badge-fill) 55%, transparent);
+  background: color-mix(in srgb, var(--jt-badge-fill) 16%, transparent);
+  color: var(--jt-badge-color);
+  font-size: var(--jt-fs-xs);
+  font-weight: 500;
+  line-height: 1.6;
+  white-space: nowrap;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--jt-badge-fill);
+    box-shadow: 0 0 6px var(--jt-badge-fill);
+  }
+
+  &--success { --jt-badge-color: var(--jt-success-text); --jt-badge-fill: var(--jt-success); }
+  &--warning { --jt-badge-color: var(--jt-warning-text); --jt-badge-fill: var(--jt-warning); }
+  &--danger { --jt-badge-color: var(--jt-danger-text); --jt-badge-fill: var(--jt-danger); }
+  &--info { --jt-badge-color: var(--jt-info-text); --jt-badge-fill: var(--jt-info); }
+  &--accent { --jt-badge-color: var(--jt-accent-3-text); --jt-badge-fill: var(--jt-accent-3); }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// A message in a page or a dialog: <p class="jt-alert jt-alert--warning" role="alert"><jt-icon>…
+.jt-alert {
+  --jt-alert-color: var(--jt-info-text);
+  --jt-alert-fill: var(--jt-info);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--jt-space-2);
+  margin: 0 0 var(--jt-space-3);
+  padding: var(--jt-space-2) var(--jt-space-3);
+  border-radius: var(--jt-radius-md);
+  border: 1px solid color-mix(in srgb, var(--jt-alert-fill) 55%, transparent);
+  background: color-mix(in srgb, var(--jt-alert-fill) 14%, transparent);
+  color: var(--jt-alert-color);
+  font-weight: 500;
+
+  > .jt-icon {
+    flex: none;
+    color: var(--jt-alert-fill);
+  }
+
+  &--success { --jt-alert-color: var(--jt-success-text); --jt-alert-fill: var(--jt-success); }
+  &--warning { --jt-alert-color: var(--jt-warning-text); --jt-alert-fill: var(--jt-warning); }
+  &--danger { --jt-alert-color: var(--jt-danger-text); --jt-alert-fill: var(--jt-danger); }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Log output: <section class="jt-log-output"><pre>line</pre>
+.jt-log-output {
+  flex: 1;
+  min-height: 160px;
+  overflow: auto;
+  padding: var(--jt-space-3);
+  border: 1px solid var(--jt-divider);
+  border-radius: var(--jt-radius-md);
+  background: var(--jt-surface);
+  color: var(--jt-text-muted);
+  font-family: var(--jt-font-mono);
+  font-size: var(--jt-fs-xs);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+
+  // Wrap by words; a word longer than the line (hash, URL) is still broken — overflow-wrap above
+  pre {
+    margin: 0;
+    font: inherit;
+    white-space: pre-wrap;
+    word-break: normal;
+  }
+
+  // Long lines do not wrap, scroll sideways
+  &.jt-log-nowrap {
+    overflow-wrap: normal;
+
+    pre {
+      width: max-content;
+      white-space: pre;
+      word-break: normal;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Table: <table class="jt-table" ngGrid> … <tr ngGridRow> <td ngGridCell>
+.jt-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--jt-radius-md);
+}
+
+.jt-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--jt-text);
+  font-size: var(--jt-fs-md);
+
+  th,
+  td {
+    padding: var(--jt-space-2) var(--jt-space-3);
+    border-bottom: 1px solid var(--jt-divider);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+    color: var(--jt-text-muted);
+    font-weight: 500;
+    font-size: var(--jt-fs-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  tbody tr {
+    transition: background-color var(--jt-duration-fast);
+  }
+
+  tbody tr:hover {
+    background: color-mix(in srgb, var(--jt-accent) 8%, transparent);
+  }
+
+  [ngGridCell]:focus-visible,
+  [ngGridCell][aria-selected='true'] {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--jt-accent);
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Tabs (Aria): <div ngTabs> <ul ngTabList class="jt-tablist"> <li ngTab class="jt-tab"> … <div ngTabPanel class="jt-tabpanel">
+// Tabs that do not fit in one line wrap to the next
+.jt-tablist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--jt-space-1);
+  margin: 0 0 var(--jt-space-4);
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--jt-divider);
+}
+
+.jt-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--jt-space-2);
+  text-decoration: none;
+  padding: var(--jt-space-2) var(--jt-space-4);
+  color: var(--jt-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: var(--jt-radius-sm) var(--jt-radius-sm) 0 0;
+  transition: color var(--jt-duration-fast), background-color var(--jt-duration-fast);
+
+  &:hover {
+    color: var(--jt-text);
+    background: color-mix(in srgb, var(--jt-accent) 8%, transparent);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--jt-focus-ring);
+  }
+
+  // Link tabs (navigation between pages): <nav class="jt-tablist"> <a class="jt-tab" aria-current="page">
+  &[aria-selected='true'],
+  &[aria-current='page'] {
+    color: var(--jt-accent-text);
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: var(--jt-space-2);
+      right: var(--jt-space-2);
+      bottom: -1px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--jt-accent);
+      box-shadow: var(--jt-glow-accent);
+    }
+  }
+
+  &[aria-disabled='true'] {
+    color: var(--jt-text-disabled);
+    cursor: default;
+  }
+}
+
+.jt-tabpanel[inert] {
+  display: none;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// "One of" switch (Aria listbox, instead of mat-button-toggle):
+// <div ngListbox class="jt-segmented" orientation="horizontal" selectionMode="follow" [value]="[x()]" (valueChange)="x.set($event[0])">
+//   <div ngOption class="jt-segment" [value]="'a'" label="A">A</div>
+.jt-segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--jt-field-border);
+  border-radius: var(--jt-radius-pill);
+  background: var(--jt-field-bg);
+
+  &[aria-disabled='true'] {
+    opacity: 0.6;
+  }
+}
+
+.jt-segment {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--jt-space-1);
+  min-height: 30px;
+  padding: 0 var(--jt-space-3);
+  border-radius: var(--jt-radius-pill);
+  color: var(--jt-text-muted);
+  font-size: var(--jt-fs-md);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--jt-duration-fast), background-color var(--jt-duration-base) var(--jt-easing),
+    box-shadow var(--jt-duration-base), transform var(--jt-duration-fast);
+
+  &:hover {
+    color: var(--jt-text);
+    background: color-mix(in srgb, var(--jt-accent) 8%, transparent);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--jt-focus-ring);
+  }
+
+  &:active:not([aria-disabled='true']) {
+    transform: scale(0.96);
+  }
+
+  &[aria-selected='true'] {
+    color: var(--jt-on-accent);
+    background: var(--jt-accent);
+    box-shadow: var(--jt-glow-accent);
+    animation: jt-segment-in var(--jt-duration-base) var(--jt-easing);
+  }
+
+  &[aria-disabled='true'] {
+    color: var(--jt-text-disabled);
+    cursor: default;
+  }
+}
+
+@keyframes jt-segment-in {
+  from {
+    transform: scale(0.92);
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jt-segment {
+    transition: none;
+    animation: none !important;
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Popups (menu, select list): "strong" glass, in a CDK Overlay
+.jt-popup {
+  @include glass(true);
+  min-width: 180px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: var(--jt-space-1);
+  border-radius: var(--jt-radius-md);
+  box-shadow: var(--jt-shadow-lg);
+}
+
+// Menu (Aria): <button ngMenuTrigger> + overlay → <div ngMenu class="jt-popup jt-menu"> <div ngMenuItem class="jt-menu-item">
+.jt-menu-item,
+.jt-option {
+  display: flex;
+  align-items: center;
+  gap: var(--jt-space-2);
+  padding: var(--jt-space-2) var(--jt-space-3);
+  border-radius: var(--jt-radius-sm);
+  color: var(--jt-text);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+
+  &:hover,
+  &[data-active='true'],
+  &:focus-visible {
+    background: color-mix(in srgb, var(--jt-accent) 14%, transparent);
+  }
+
+  &[aria-disabled='true'] {
+    color: var(--jt-text-disabled);
+    cursor: default;
+  }
+
+  .jt-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    color: var(--jt-text-muted);
+  }
+}
+
+// Dangerous menu item: red, last, after a separator
+.jt-menu-item--danger:not([aria-disabled='true']) {
+  color: var(--jt-danger-text);
+
+  .jt-icon {
+    color: var(--jt-danger-text);
+  }
+
+  &:hover,
+  &[data-active='true'],
+  &:focus-visible {
+    background: color-mix(in srgb, var(--jt-danger) 14%, transparent);
+  }
+}
+
+.jt-menu-separator {
+  height: 1px;
+  margin: var(--jt-space-1) 0;
+  background: var(--jt-divider);
+}
+
+.jt-option[aria-selected='true'] {
+  color: var(--jt-accent-text);
+  font-weight: 500;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Action bar (Aria): <div ngToolbar class="jt-toolbar">
+.jt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--jt-space-2);
+}
+
+// A secret in a plain text field (not a password — Chrome does not offer saved passwords there): hide the characters, JtPasswordToggle [mask]
+input.jt-masked {
+  -webkit-text-security: disc;
+}

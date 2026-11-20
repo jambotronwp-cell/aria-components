@@ -1,0 +1,152 @@
+// @jambotron/aria-components — classes of own controls: button, dialog surface, toast, spinner.
+
+// Button: <button class="jt-button jt-button--filled">; --outlined, --text, --danger; .jt-icon-button — square
+.jt-button,
+.jt-icon-button {
+  --jt-button-color: var(--jt-accent-text);
+  --jt-button-fill: var(--jt-accent);
+  --jt-button-on-fill: var(--jt-on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--jt-space-2);
+  min-height: 36px;
+  padding: 0 var(--jt-space-4);
+  border: 1px solid transparent;
+  border-radius: var(--jt-radius-pill, 999px);
+  background: none;
+  color: var(--jt-button-color);
+  font: inherit;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--jt-duration-fast) var(--jt-easing), box-shadow var(--jt-duration-fast) var(--jt-easing);
+
+  &:hover:not(:disabled):not([aria-disabled='true']) {
+    background: color-mix(in srgb, var(--jt-button-fill) 14%, transparent);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--jt-focus-ring);
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    color: var(--jt-text-disabled);
+    cursor: default;
+  }
+}
+
+.jt-button--filled {
+  background: var(--jt-button-fill);
+  color: var(--jt-button-on-fill);
+
+  &:hover:not(:disabled):not([aria-disabled='true']) {
+    background: color-mix(in srgb, var(--jt-button-fill) 85%, var(--jt-text));
+    box-shadow: var(--jt-glow-accent);
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    background: color-mix(in srgb, var(--jt-text) 12%, transparent);
+    color: var(--jt-text-disabled);
+  }
+}
+
+.jt-button--outlined {
+  border-color: color-mix(in srgb, var(--jt-button-fill) 60%, transparent);
+}
+
+.jt-button--danger {
+  --jt-button-color: var(--jt-danger-text);
+  --jt-button-fill: var(--jt-danger);
+  --jt-button-on-fill: var(--jt-on-danger);
+}
+
+.jt-icon-button {
+  width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  color: var(--jt-text-muted);
+}
+
+// Dialog surface (CDK dialog panel — JtDialogService adds .jt-dialog-panel)
+.jt-dialog-panel {
+  max-width: 92vw;
+  max-height: 90vh;
+}
+
+.jt-dialog-backdrop {
+  background: rgba(5, 10, 36, 0.45);
+}
+
+.jt-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--jt-space-3);
+  padding: var(--jt-space-5);
+  border-radius: var(--jt-radius-lg);
+  background-color: var(--jt-glass-tint-strong);
+  background-image: linear-gradient(var(--jt-glass-base), var(--jt-glass-base));
+  backdrop-filter: var(--jt-glass-blur);
+  -webkit-backdrop-filter: var(--jt-glass-blur);
+  border: 1px solid var(--jt-glass-border);
+  box-shadow: var(--jt-shadow-lg);
+  color: var(--jt-text);
+  overflow: auto;
+}
+
+.jt-dialog__title {
+  margin: 0;
+  font-size: var(--jt-fs-xl);
+}
+
+.jt-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--jt-space-2);
+}
+
+// Text field without Material: <input class="jt-input">
+.jt-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  padding: var(--jt-space-2) var(--jt-space-3);
+  border: 1px solid var(--jt-field-border);
+  border-radius: var(--jt-radius-md);
+  background: var(--jt-field-bg);
+  color: var(--jt-text);
+  font: inherit;
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--jt-accent);
+    box-shadow: var(--jt-focus-ring);
+  }
+}
+
+.jt-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--jt-space-2);
+  cursor: pointer;
+
+  input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--jt-accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jt-button,
+  .jt-icon-button {
+    transition: none;
+  }
+}
