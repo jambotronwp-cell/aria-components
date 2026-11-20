@@ -20,7 +20,6 @@ Light and dark theme out of the box, everything accessible from the keyboard and
 ## Install
 
 ```bash
-npm config set @jambotron:registry https://gitea.jambotron.com/api/packages/jambotron_gang/npm/
 npm install @jambotron/aria-components
 ```
 

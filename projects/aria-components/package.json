@@ -1,6 +1,6 @@
 {
   "name": "@jambotron/aria-components",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "peerDependencies": {
     "@angular/common": "^22.2.0",
     "@angular/core": "^22.2.0",
@@ -16,7 +16,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://gitea.jambotron.com/jambotron_gang/jambotron-aria-components.git"
+    "url": "git+https://github.com/jambotronwp-cell/aria-components.git"
   },
   "exports": {
     "./styles/*": {
@@ -35,5 +35,8 @@
     "dialog",
     "toast",
     "icons"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/jambotronwp-cell/aria-components/issues"
+  }
 }
